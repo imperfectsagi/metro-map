@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://metromap.app/sitemap.xml
+Sitemap: https://delhimetromap.vercel.app/sitemap.xml

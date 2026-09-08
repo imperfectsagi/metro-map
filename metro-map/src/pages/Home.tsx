@@ -208,7 +208,6 @@ export default function Home() {
             @bigfootkrampus
           </a>
           <span>·</span>
-          <a href="tel:+918595395788" className="hover:text-slate-600">+91 8595395788</a>
           <span>·</span>
           <a href="mailto:deepak@brandlaunchstudio.online" className="hover:text-slate-600">
             deepak@brandlaunchstudio.online
