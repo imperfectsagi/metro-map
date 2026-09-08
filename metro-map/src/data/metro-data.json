@@ -1,0 +1,113 @@
+{
+  "lines": [
+    {
+      "id": "red",
+      "name": "Red Line",
+      "colour": "#FF4040",
+      "stations": ["shaheed-sthal", "hindon-river", "arthala", "mohan-nagar", "shyam-park", "major-mohit-sharma", "raj-bagh", "shaheed-nagar", "dilshad-garden", "jhilmil", "mansarovar-park", "shahdara", "welcome", "seelampur", "shastri-park", "kashmere-gate", "tis-hazari", "pul-bangash", "pratap-nagar", "shastri-nagar", "inderlok", "kanhaiya-nagar", "keshav-puram", "netaji-subhash-place", "kohat-enclave", "madhuban-chowk", "rohini", "dr-baba-saheb-ambedkar-hospital", "rithala"]
+    },
+    {
+      "id": "yellow",
+      "name": "Yellow Line",
+      "colour": "#FFDF00",
+      "stations": ["samaypur-badli", "rohini-sector-18-19", "haiderpur-badli-mor", "jahangirpuri", "adarsh-nagar", "azadpur", "model-town", "guru-tegh-bahadur-nagar", "vishwavidyalaya", "vidhan-sabha", "civil-lines", "kashmere-gate", "chandni-chowk", "chawri-bazar", "new-delhi", "rajiv-chowk", "patel-chowk", "central-secretariat", "seva-teerth", "lok-kalyan-marg", "jor-bagh", "dilli-haat-ina", "aiims", "green-park", "hauz-khas", "malviya-nagar", "saket", "qutab-minar", "chhatarpur", "sultanpur", "ghitorni", "arjan-garh", "guru-dronacharya", "sikanderpur", "mg-road", "iffco-chowk", "millennium-city-centre"]
+    },
+    {
+      "id": "blue",
+      "name": "Blue Line",
+      "colour": "#0072BC",
+      "stations": ["dwarka-sector-21", "dwarka-sector-8", "dwarka-sector-9", "dwarka-sector-10", "dwarka-sector-11", "dwarka-sector-12", "dwarka-sector-13", "dwarka-sector-14", "dwarka-kakrola", "dwarka-mor", "nawada", "uttam-nagar-west", "uttam-nagar-east", "janakpuri-west", "janakpuri-east", "tilak-nagar", "subhash-nagar", "tagore-garden", "rajouri-garden", "ramesh-nagar", "moti-nagar", "kirti-nagar", "shadipur", "patel-nagar", "rajendra-place", "karol-bagh", "jhandewalan", "rk-ashram-marg", "rajiv-chowk", "barakhamba-road", "mandi-house", "supreme-court", "indraprastha", "yamuna-bank", "akshardham", "mayur-vihar-i", "mayur-vihar-extension", "new-ashok-nagar", "noida-sector-15", "noida-sector-16", "noida-sector-18", "botanical-garden", "golf-course", "noida-city-centre", "noida-sector-34", "noida-sector-52", "noida-sector-61", "noida-sector-59", "noida-sector-62", "noida-electronic-city"]
+    },
+    {
+      "id": "blue_branch",
+      "name": "Blue Line Branch",
+      "colour": "#0072BC",
+      "stations": ["yamuna-bank", "laxmi-nagar", "nirman-vihar", "preet-vihar", "karkarduma", "anand-vihar-isbt", "kaushambi", "vaishali"]
+    },
+    {
+      "id": "green",
+      "name": "Green Line",
+      "colour": "#00A651",
+      "stations": ["brigadier-hoshiyar-singh", "bahadurgarh-city", "pandit-shree-ram-sharma", "tikri-border", "tikri-kalan", "ghevra", "mundka-industrial-area", "mundka", "rajdhani-park", "nangloi-railway-station", "nangloi", "maharaja-surajmal-stadium", "udyog-nagar", "peera-garhi", "paschim-vihar-west", "paschim-vihar-east", "madipur", "shivaji-park", "punjabi-bagh-west", "punjabi-bagh", "ashok-park-main", "inderlok"]
+    },
+    {
+      "id": "green_branch",
+      "name": "Green Line Branch",
+      "colour": "#00A651",
+      "stations": ["ashok-park-main", "satguru-ram-singh-marg", "kirti-nagar"]
+    },
+    {
+      "id": "violet",
+      "name": "Violet Line",
+      "colour": "#553592",
+      "stations": ["kashmere-gate", "lal-quila", "jama-masjid", "delhi-gate", "ito", "mandi-house", "janpath", "central-secretariat", "khan-market", "jawaharlal-nehru-stadium", "jangpura", "lajpat-nagar", "moolchand", "kailash-colony", "nehru-place", "kalkaji-mandir", "govind-puri", "harkesh-nagar-okhla", "jasola-apollo", "sarita-vihar", "mohan-estate", "tughlakabad-station", "badarpur-border", "sarai", "nhpc-chowk", "mewala-maharajpur", "sector-28", "badkal-mor", "old-faridabad", "neelam-chowk-ajronda", "bata-chowk", "escorts-mujesar", "sant-surdas", "raja-nahar-singh"]
+    },
+    {
+      "id": "pink",
+      "name": "Pink Line",
+      "colour": "#FC8EAC",
+      "stations": ["majlis-park", "azadpur", "shalimar-bagh", "netaji-subhash-place", "shakurpur", "punjabi-bagh-west", "esi-basaidarapur", "rajouri-garden", "maya-puri", "naraina-vihar", "delhi-cantt", "durgabai-deshmukh-south-campus", "sir-m-vishweshwaraiah-moti-bagh", "bhikaji-cama-place", "sarojini-nagar", "dilli-haat-ina", "south-extension", "lajpat-nagar", "vinobapuri", "ashram", "sarai-kale-khan-nizamuddin", "mayur-vihar-i", "shri-ram-mandir-mayur-vihar", "trilokpuri-sanjay-lake", "east-vinod-nagar-mayur-vihar-ii", "mandawali-west-vinod-nagar", "ip-extension", "anand-vihar-isbt", "karkarduma", "karkarduma-court", "krishna-nagar", "east-azad-nagar", "welcome", "jaffrabad", "maujpur-babarpur", "yamuna-vihar", "bhajanpura", "khajuri-khas", "nanaksar-sonia-vihar", "jagatpur-wazirabad", "jharoda-majra", "burari"]
+    },
+    {
+      "id": "pink_branch",
+      "name": "Pink Line Spur",
+      "colour": "#FC8EAC",
+      "stations": ["maujpur-babarpur", "gokulpuri", "johri-enclave", "shiv-vihar"]
+    },
+    {
+      "id": "magenta",
+      "name": "Magenta Line",
+      "colour": "#CC338B",
+      "stations": ["krishna-park-extension", "janakpuri-west", "dabri-mor-janakpuri-south", "dashrathpuri", "palam", "sadar-bazar-cantonment", "terminal-1-igi-airport", "shankar-vihar", "vasant-vihar", "munirka", "rk-puram", "iit", "hauz-khas", "panchsheel-park", "chirag-delhi", "greater-kailash", "nehru-enclave", "kalkaji-mandir", "okhla-nsic", "sukhdev-vihar", "jamia-millia-islamia", "okhla-vihar", "jasola-vihar-shaheen-bagh", "kalindi-kunj", "okhla-bird-sanctuary", "botanical-garden"]
+    },
+    {
+      "id": "magenta_north",
+      "name": "Magenta Line North",
+      "colour": "#CC338B",
+      "stations": ["deepali-chowk", "madhuban-chowk", "uttari-pitampura-prashant-vihar", "haiderpur-village", "haiderpur-badli-mor", "bhalswa", "majlis-park"]
+    },
+    {
+      "id": "grey",
+      "name": "Grey Line",
+      "colour": "#838996",
+      "stations": ["dwarka-kakrola", "nangli", "najafgarh", "dhansa-bus-stand"]
+    },
+    {
+      "id": "orange",
+      "name": "Airport Express",
+      "colour": "#FF8C00",
+      "stations": ["new-delhi", "shivaji-stadium", "dhaula-kuan", "delhi-aerocity", "igi-airport", "dwarka-sector-21", "yashobhoomi-dwarka-sector-25"]
+    }
+  ],
+  "interchanges": [
+    {"station": "kashmere-gate", "lines": ["red", "yellow", "violet"]},
+    {"station": "rajiv-chowk", "lines": ["blue", "yellow"]},
+    {"station": "inderlok", "lines": ["red", "green"]},
+    {"station": "new-delhi", "lines": ["yellow", "orange"]},
+    {"station": "central-secretariat", "lines": ["yellow", "violet"]},
+    {"station": "mandi-house", "lines": ["blue", "violet"]},
+    {"station": "hauz-khas", "lines": ["yellow", "magenta"]},
+    {"station": "kalkaji-mandir", "lines": ["violet", "magenta"]},
+    {"station": "botanical-garden", "lines": ["blue", "magenta"]},
+    {"station": "janakpuri-west", "lines": ["blue", "magenta"]},
+    {"station": "netaji-subhash-place", "lines": ["red", "pink"]},
+    {"station": "azadpur", "lines": ["yellow", "pink"]},
+    {"station": "dilli-haat-ina", "lines": ["yellow", "pink"]},
+    {"station": "lajpat-nagar", "lines": ["violet", "pink"]},
+    {"station": "rajouri-garden", "lines": ["blue", "pink"]},
+    {"station": "mayur-vihar-i", "lines": ["blue", "pink"]},
+    {"station": "anand-vihar-isbt", "lines": ["blue_branch", "pink"]},
+    {"station": "karkarduma", "lines": ["blue_branch", "pink"]},
+    {"station": "welcome", "lines": ["red", "pink"]},
+    {"station": "punjabi-bagh-west", "lines": ["green", "pink"]},
+    {"station": "kirti-nagar", "lines": ["blue", "green_branch"]},
+    {"station": "yamuna-bank", "lines": ["blue", "blue_branch"]},
+    {"station": "ashok-park-main", "lines": ["green", "green_branch"]},
+    {"station": "maujpur-babarpur", "lines": ["pink", "pink_branch"]},
+    {"station": "dwarka-kakrola", "lines": ["blue", "grey"]},
+    {"station": "dwarka-sector-21", "lines": ["blue", "orange"]},
+    {"station": "haiderpur-badli-mor", "lines": ["yellow", "magenta_north"]},
+    {"station": "madhuban-chowk", "lines": ["red", "magenta_north"]},
+    {"station": "majlis-park", "lines": ["pink", "magenta_north"]}
+  ]
+}
