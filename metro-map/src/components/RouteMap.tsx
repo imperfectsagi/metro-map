@@ -115,6 +115,62 @@ export default function RouteMap({ route }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stationRows.length]);
 
+  // Let the page keep scrolling once this inner panel hits its top/bottom
+  // edge, instead of trapping the gesture ("nested scroll" getting stuck).
+  // `overscroll-behavior: contain` (in the className below) already stops
+  // the boundary bounce/chain on most browsers, but a few mobile browsers
+  // (notably iOS Safari with momentum scrolling) still swallow the rest of
+  // an in-flight wheel/touch gesture once it hits the inner edge instead of
+  // handing it to the page. We actively intervene only in that situation:
+  // if the pointer is already at the top/bottom edge and the gesture wants
+  // to go further the same way, we preventDefault the inner scroll and
+  // forward the equivalent scroll delta to the page (window) ourselves.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const EPS = 1;
+    const atTop = () => el.scrollTop <= EPS;
+    const atBottom = () => el.scrollTop + el.clientHeight >= el.scrollHeight - EPS;
+    const canScrollInner = () => el.scrollHeight > el.clientHeight + EPS;
+
+    const handleWheel = (e: WheelEvent) => {
+      const goingDown = e.deltaY > 0;
+      const goingUp = e.deltaY < 0;
+      if (!canScrollInner() || (goingDown && atBottom()) || (goingUp && atTop())) {
+        e.preventDefault();
+        window.scrollBy({ top: e.deltaY, behavior: 'auto' });
+      }
+    };
+
+    let lastTouchY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      lastTouchY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const currentY = e.touches[0].clientY;
+      const frameDeltaY = lastTouchY - currentY; // >0 = finger moved up = content scrolls down
+      const goingDown = frameDeltaY > 0;
+      const goingUp = frameDeltaY < 0;
+      if (!canScrollInner() || (goingDown && atBottom()) || (goingUp && atTop())) {
+        e.preventDefault();
+        window.scrollBy({ top: frameDeltaY, behavior: 'auto' });
+      }
+      lastTouchY = currentY;
+    };
+
+    // Must be non-passive so preventDefault() on the inner element can
+    // actually stop the browser from swallowing the gesture at the edge.
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener('wheel', handleWheel);
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
+
   if (singleStation) {
     const s = getStationById(route.from);
     return (

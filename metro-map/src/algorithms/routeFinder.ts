@@ -40,10 +40,34 @@ function getDirection(lineId: string, fromStation: string, toStation: string): s
   }
 }
 
+// How many "extra stops" a single interchange is considered worth.
+// Tuned so that swapping one interchange for a modest stop-count saving
+// is worthwhile, but an interchange isn't so cheap that the algorithm
+// starts hopping lines for a single-stop shortcut (which would produce
+// jittery, unrealistic-looking routes and eat into the walking/waiting
+// time an interchange actually costs a passenger).
+//
+// score = interchanges * INTERCHANGE_PENALTY + totalStops
+//
+// e.g. a 14-stop / 2-change route scores 2*4 + 14 = 22
+//      an  8-stop / 3-change route scores 3*4 +  8 = 20  -> now correctly wins
+const INTERCHANGE_PENALTY = 4;
+
 /**
- * Find route preferring fewer interchanges.
- * Uses BFS with state = (station, currentLine, interchanges)
- * Cost primarily by interchanges, then by hops.
+ * Find the best route between two stations using a hybrid cost that
+ * balances interchange count against total stops travelled, so a route
+ * with fewer changes isn't automatically preferred over a genuinely
+ * shorter/faster one.
+ *
+ * Uses Dijkstra-style search with state = (station, currentLine,
+ * interchangesSoFar), where the running cost is
+ * `interchanges * INTERCHANGE_PENALTY + stopsSoFar`. Interchange count is
+ * tracked as part of the state key (not just folded into the cost) because
+ * it's also a capped resource — see the note above `visited` below for why
+ * that matters for correctness. This is a proper shortest-path search
+ * (priority queue, no early-exit heuristics that could skip a lower-cost
+ * path), so the first time we pop the destination off the frontier we have
+ * the true minimum-cost route.
  */
 export function findRoute(fromId: string, toId: string): RouteResult | null {
   buildGraph();
@@ -65,10 +89,20 @@ export function findRoute(fromId: string, toId: string): RouteResult | null {
     station: string;
     line: string;
     interchanges: number;
+    stops: number; // total stops travelled so far (edges taken)
+    score: number; // interchanges * INTERCHANGE_PENALTY + stops
     path: { station: string; line: string }[];
   }
 
-  const visited = new Map<string, number>(); // key -> best interchanges
+  // Key includes `interchanges` alongside (station, line). Interchange
+  // count isn't just part of the cost — it's a capped resource (see the
+  // `newInterchanges > 4` guard below), so a state that has spent FEWER
+  // interchanges to reach a station can still unlock cheaper continuations
+  // that a lower-score-but-interchange-heavier state at the same station
+  // cannot reach (it may already be at the cap). Pruning on score alone
+  // per (station, line) would incorrectly discard those still-flexible
+  // states — keying on interchange count too keeps the search admissible.
+  const visited = new Map<string, number>(); // key -> best score seen
   const queue: Node[] = [];
 
   // Start: no line yet
@@ -76,45 +110,49 @@ export function findRoute(fromId: string, toId: string): RouteResult | null {
     station: fromId,
     line: '',
     interchanges: 0,
+    stops: 0,
+    score: 0,
     path: [{ station: fromId, line: '' }],
   });
-  visited.set(`${fromId}|`, 0);
+  visited.set(`${fromId}|0|`, 0);
 
   let best: Node | null = null;
 
   while (queue.length > 0) {
-    // Simple priority: prefer lower interchanges (sort occasionally or use deque)
-    queue.sort((a, b) => a.interchanges - b.interchanges || a.path.length - b.path.length);
+    // Priority: lowest hybrid score first (Dijkstra frontier order).
+    // Tie-break on fewer stops so equally-scored routes still prefer the
+    // physically shorter one.
+    queue.sort((a, b) => a.score - b.score || a.stops - b.stops);
     const current = queue.shift()!;
 
     if (current.station === toId) {
-      if (!best || current.interchanges < best.interchanges || 
-          (current.interchanges === best.interchanges && current.path.length < best.path.length)) {
-        best = current;
-      }
-      // continue to find possibly better
-      if (current.interchanges === 0) break; // optimal
-      continue;
+      // First time we pop the destination, it's the true minimum-cost
+      // route (Dijkstra guarantee) — no need to keep searching.
+      best = current;
+      break;
     }
 
     const neighbors = graph.get(current.station) || [];
     for (const { to, line } of neighbors) {
-      let newInterchanges = current.interchanges;
-      if (current.line && current.line !== line) {
-        newInterchanges += 1;
-      }
-      // Soft limit to avoid too long routes
+      const isInterchange = current.line !== '' && current.line !== line;
+      const newInterchanges = current.interchanges + (isInterchange ? 1 : 0);
+      const newStops = current.stops + 1;
+      const newScore = newInterchanges * INTERCHANGE_PENALTY + newStops;
+
+      // Soft limit to avoid absurd routes ballooning search space
       if (newInterchanges > 4) continue;
 
-      const key = `${to}|${line}`;
+      const key = `${to}|${newInterchanges}|${line}`;
       const prevBest = visited.get(key);
-      if (prevBest !== undefined && prevBest <= newInterchanges) continue;
-      visited.set(key, newInterchanges);
+      if (prevBest !== undefined && prevBest <= newScore) continue;
+      visited.set(key, newScore);
 
       queue.push({
         station: to,
         line,
         interchanges: newInterchanges,
+        stops: newStops,
+        score: newScore,
         path: [...current.path, { station: to, line }],
       });
     }
