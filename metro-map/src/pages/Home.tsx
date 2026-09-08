@@ -1,14 +1,13 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import StationSearch from '../components/StationSearch';
 import RoutePanel from '../components/RoutePanel';
+import RouteMap from '../components/RouteMap';
 import ShareButton from '../components/ShareButton';
 import { findRoute, getAllStationOptions } from '../algorithms/routeFinder';
 import type { RouteResult } from '../types/metro';
 import { getStationName } from '../data/stations';
 import { buildRouteUrl } from '../utils/routeUrl';
-
-const MetroScene = lazy(() => import('../components/MetroScene'));
 
 const stationOptions = getAllStationOptions();
 
@@ -93,7 +92,7 @@ export default function Home() {
             <h1 className="text-xl font-bold tracking-tight flex items-center gap-1.5">
               <span aria-hidden>🚇</span> Metro Map
             </h1>
-            <p className="text-xs text-slate-500">Understand your Metro journey visually.</p>
+            <p className="text-xs text-slate-500">Delhi Metro route map & line finder.</p>
           </div>
         </div>
       </header>
@@ -158,24 +157,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 3D Map */}
+        {/* 2D Metro Route Map */}
         {showMap && route && (
-          <section className="relative flex-1 min-h-[45vh] bg-slate-900 mx-0">
-            <Suspense
-              fallback={
-                <div className="absolute inset-0 flex items-center justify-center text-white/70 text-sm">
-                  Loading map…
-                </div>
-              }
-            >
-              <MetroScene route={route} />
-            </Suspense>
+          <section className="px-4 pt-1 pb-1">
+            <RouteMap key={`${route.from}-${route.to}`} route={route} />
           </section>
         )}
 
         {/* Route Panel */}
         {route && (
-          <section className="px-4 pb-6 pt-2">
+          <section className="px-4 pb-6 pt-3">
             <RoutePanel route={route} />
             <div className="mt-3">
               <ShareButton
@@ -192,17 +183,18 @@ export default function Home() {
           <section className="px-4 py-8 text-slate-600 text-sm leading-relaxed">
             <h2 className="text-base font-semibold text-slate-800 mb-2">Delhi Metro Map & Route Finder</h2>
             <p className="mb-3">
-              Metro Map is a free Delhi Metro route finder. Pick your From and To stations to see the
-              best Delhi Metro route with correct line colours, interchange stations and direction —
-              shown on a clear interactive 3D metro map, without studying a complicated wall map.
+              Metro Map is a free Delhi Metro route map and route finder. Pick your From and To
+              stations to instantly see the best Delhi Metro route — drawn as a clean, easy 2D metro
+              map with correct line colours, every interchange and the exact train direction, so you
+              never need to study the full, complicated Delhi Metro route map.
             </p>
             <p className="mb-3">
-              Covers all operational Delhi Metro lines: Red, Yellow, Blue, Green, Violet, Pink, Magenta,
-              Grey and the Airport Express, across Delhi, Noida, Gurugram and Faridabad.
+              Covers all operational Delhi Metro lines — Red, Yellow, Blue, Green, Violet, Pink,
+              Magenta, Grey and the Airport Express — across Delhi, Noida, Gurugram and Faridabad.
             </p>
             <p>
-              Once your route is ready, share it instantly with friends and family on WhatsApp or copy
-              the link — no sign-up needed.
+              Once your Delhi Metro route is ready, share it instantly with friends and family on
+              WhatsApp or copy the link — no sign-up needed.
             </p>
           </section>
         )}

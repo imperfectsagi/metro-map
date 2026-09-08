@@ -2,31 +2,33 @@
 
 **Find your Delhi Metro route, instantly and visually.**
 
-A fast, mobile-first Delhi Metro route finder. Pick your From and To stations
-and see the complete journey on an interactive 3D map — with correct line
-colours, interchange stations and direction — without studying a complicated
-wall map.
+A fast, mobile-first Delhi Metro map and route finder. Pick your From and To
+stations and see the complete journey on a clean 2D metro navigation map —
+with correct line colours, every interchange and the exact train direction —
+without studying the full, complicated Delhi Metro route map.
 
 ## Features
 
 - **From → To station search** with keyboard navigation and line-colour hints
 - **Client-side route calculation** — no backend, no API calls, fewest
   interchanges preferred
-- **Interactive 3D route visualisation** (Three.js) with irrelevant lines and
-  stations faded out so the journey is never confusing
-- **Clear step-by-step instructions** — line to take, direction, stop count,
-  and exactly where to change trains
+- **Clean 2D route map** that shows only the relevant Metro line(s) for your
+  journey as a simple, app-like schematic (not the full network diagram) —
+  with FROM / DESTINATION pins, every interchange clearly marked, and a
+  subtly animated train dot
+- **Clear step-by-step instructions** — line to take, direction/terminal
+  station, stop count, and exactly where to change trains
 - **Share via WhatsApp or copy link** — recipients land on the same route
 - **Fully static** — no backend, database, login, or accounts
-- **Fast and smooth on mobile** — small initial bundle, 3D scene is lazy
-  loaded only after a route is found
+- **Fast and smooth on mobile** — tiny bundle, pure SVG rendering, no heavy
+  3D/WebGL dependency
 - **SEO ready** — structured data, sitemap, robots.txt, per-route page titles
 
 ## Tech Stack
 
 - React 19 + TypeScript + Vite 6
 - Tailwind CSS 4
-- Three.js (3D route rendering)
+- Pure SVG route schematic (no 3D/WebGL dependency)
 - Static JSON metro data — no server required
 
 ## Local Development
@@ -59,7 +61,7 @@ npx tsc -b      # type-check only
 
 ```
 src/
-  components/     # UI + 3D scene (StationSearch, MetroScene, RoutePanel, ShareButton)
+  components/     # UI + 2D route map (StationSearch, RouteMap, RoutePanel, ShareButton)
   data/           # Metro line data (metro-data.json) & station positions (stations.ts)
   algorithms/     # Client-side route finder (BFS, minimises interchanges)
   types/          # Shared TypeScript types
@@ -73,8 +75,8 @@ Metro line sequences and interchanges are based on the operational DMRC
 network (2026 snapshot), covering Red, Yellow, Blue (+ branch), Green
 (+ branch), Violet, Pink (+ spur), Magenta (+ north extension), Grey and the
 Airport Express — across Delhi, Noida, Gurugram and Faridabad. Station
-coordinates used for the 3D layout are approximate relative positions for
-visualisation, not precise GPS.
+coordinates are approximate relative positions used only to preserve each
+line's real station order, not precise GPS.
 
 ## Notes for maintainers
 

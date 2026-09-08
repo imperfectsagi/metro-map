@@ -71,7 +71,7 @@ Vercel or Netlify.
 ## Verifying after deploy
 
 - Open the live URL and confirm the search UI loads instantly.
-- Pick two stations, tap **Show Route**, and confirm the 3D map and
+- Pick two stations, tap **Show Route**, and confirm the 2D route map and
   step-by-step instructions appear.
 - Tap **Copy Link**, open it in a new private/incognito tab, and confirm the
   same route loads automatically (this tests the SPA rewrite rule).

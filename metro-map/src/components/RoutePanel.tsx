@@ -5,84 +5,111 @@ interface Props {
   route: RouteResult;
 }
 
+// A small set of line emoji swatches so the "Towards" line reads at a glance,
+// matching how passengers actually scan platform signage.
+function lineDot(colour: string) {
+  return (
+    <span
+      className="inline-block w-3 h-3 rounded-full ring-2 ring-white shadow align-middle"
+      style={{ backgroundColor: colour }}
+      aria-hidden
+    />
+  );
+}
+
 export default function RoutePanel({ route }: Props) {
   if (!route.segments.length) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-        <p className="text-sm text-slate-600">You are already at your destination.</p>
+      <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm text-center">
+        <div className="text-2xl mb-1">📍</div>
+        <p className="text-sm text-slate-600 font-medium">You're already at your destination.</p>
       </div>
     );
   }
 
+  const totalStops = route.stations.length - 1;
+
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-      <div className="px-4 py-3 border-b border-slate-100">
-        <h2 className="font-semibold text-slate-800">Your Journey</h2>
-        <p className="text-xs text-slate-500 mt-0.5">
+      <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+        <h2 className="font-semibold text-slate-800">Journey Instructions</h2>
+        <p className="text-xs font-medium text-slate-500">
           {route.interchangeCount === 0
-            ? 'Direct · No interchange'
-            : `${route.interchangeCount} interchange${route.interchangeCount > 1 ? 's' : ''}`}
+            ? 'Direct · no change'
+            : `${route.interchangeCount} change${route.interchangeCount > 1 ? 's' : ''}`}
           {' · '}
-          {route.stations.length - 1} {route.stations.length - 1 === 1 ? 'stop' : 'stops'} total
+          {totalStops} {totalStops === 1 ? 'stop' : 'stops'}
         </p>
       </div>
 
-      <ol className="px-4 py-3 space-y-0">
-        {route.segments.map((seg, idx) => (
-          <li key={idx} className="relative">
-            {/* Take line */}
-            <div className="flex items-start gap-3 py-2">
+      <div className="px-4 py-4 space-y-3">
+        {route.segments.map((seg, idx) => {
+          const stopCount = seg.stations.length - 1;
+          return (
+            <div key={idx}>
+              {/* Step card */}
               <div
-                className="mt-0.5 w-5 h-5 rounded-full shrink-0 border-2 border-white shadow"
-                style={{ backgroundColor: seg.colour }}
-                aria-hidden
-              />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-slate-800 text-sm">
-                  Take {seg.lineName}
-                </p>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Direction: <span className="font-medium text-slate-700">{seg.direction}</span>
-                </p>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  {seg.stations.length - 1} {seg.stations.length - 1 === 1 ? 'stop' : 'stops'}
-                </p>
-                {idx === 0 && (
-                  <p className="text-xs text-emerald-600 mt-1 font-medium">
-                    Start at {getStationName(seg.fromStation)}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Change */}
-            {idx < route.segments.length - 1 && (
-              <div className="flex items-start gap-3 py-2 ml-0.5 border-l-2 border-dashed border-slate-200 pl-5">
-                <div className="w-4 h-4 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-[10px] shrink-0 -ml-[22px] border border-amber-200">
-                  ↻
+                className="rounded-xl border overflow-hidden"
+                style={{ borderColor: seg.colour + '55' }}
+              >
+                <div
+                  className="px-3.5 py-2 flex items-center gap-2"
+                  style={{ backgroundColor: seg.colour }}
+                >
+                  <span className="text-[11px] font-bold uppercase tracking-wide text-white/90 bg-white/20 rounded-full px-2 py-0.5">
+                    Step {idx + 1}
+                  </span>
+                  <span className="text-white font-bold text-sm truncate">{seg.lineName}</span>
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-amber-800">
+                <div className="px-3.5 py-3 bg-white space-y-2">
+                  <p className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                    {lineDot(seg.colour)}
+                    Towards&nbsp;
+                    <span style={{ color: seg.colour }}>{seg.direction.toUpperCase()}</span>
+                  </p>
+                  <p className="text-sm text-slate-600">
+                    <span className="font-semibold text-slate-800">{getStationName(seg.fromStation)}</span>
+                    <span className="mx-1.5 text-slate-400">→</span>
+                    <span className="font-semibold text-slate-800">{getStationName(seg.toStation)}</span>
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    {stopCount} {stopCount === 1 ? 'stop' : 'stops'} on this line
+                  </p>
+                  {idx === 0 && (
+                    <p className="text-xs font-semibold text-emerald-600 flex items-center gap-1 pt-0.5">
+                      🟢 Board at {getStationName(seg.fromStation)}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Change instruction */}
+              {idx < route.segments.length - 1 && (
+                <div className="flex items-center gap-2.5 my-2 pl-1">
+                  <div className="w-7 h-7 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 text-sm shrink-0">
+                    🔄
+                  </div>
+                  <p className="text-sm font-semibold text-amber-800">
                     Change at {getStationName(route.interchanges[idx])}
                   </p>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Get off on last */}
-            {idx === route.segments.length - 1 && (
-              <div className="flex items-start gap-3 py-2">
-                <div className="w-5 h-5 rounded-full bg-rose-500 shrink-0 flex items-center justify-center text-white text-[10px] font-bold">
-                  ●
+              {/* Arrival */}
+              {idx === route.segments.length - 1 && (
+                <div className="flex items-center gap-2.5 mt-2.5 pl-1">
+                  <div className="w-7 h-7 rounded-full bg-rose-100 border border-rose-300 flex items-center justify-center text-rose-600 text-sm shrink-0">
+                    🎯
+                  </div>
+                  <p className="text-sm font-bold text-rose-700">
+                    Arrive at {getStationName(seg.toStation)}
+                  </p>
                 </div>
-                <p className="text-sm font-semibold text-rose-700">
-                  Get off at {getStationName(seg.toStation)}
-                </p>
-              </div>
-            )}
-          </li>
-        ))}
-      </ol>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

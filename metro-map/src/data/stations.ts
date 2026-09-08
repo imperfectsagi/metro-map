@@ -1,12 +1,14 @@
 // Approximate geographic positions for Delhi NCR Metro stations
-// Used for 3D visualization layout. Coordinates are normalized around Delhi center.
-// Real lat/lng can be substituted later; relative topology is preserved from official sequences.
+// Coordinates are normalized around Delhi center and used only as a topology
+// reference (relative east-west / north-south ordering) for the schematic
+// route map. Real lat/lng can be substituted later; relative order along
+// each line is preserved from official sequences.
 
 export interface StationPos {
   id: string;
   name: string;
-  x: number; // normalized X for 3D (east-west)
-  y: number; // normalized Y for 3D (north-south)  - note: inverted for map feel
+  x: number; // normalized X (east-west), used for relative topology only
+  y: number; // normalized Y (north-south), used for relative topology only
   lat: number;
   lng: number;
   lines: string[];
